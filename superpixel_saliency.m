@@ -1,11 +1,13 @@
-function sal = superpixel_saliency(Wc,seed,sp_pos, sp_obj, lambda1, lambda2,alpha,sp_num)
+function sal = superpixel_saliency(Wc,seed,sp_obj, sp_pos, lambda1, lambda2,alpha,sp_num)
     const = 0.1;
     Wc = (Wc-min(Wc(:)))/(max(Wc(:))-min(Wc(:)));
     %% margin boundary
     W = zeros(sp_num+length(seed), sp_num+length(seed));
     W(1:sp_num, 1:sp_num) = Wc;
-    W(seed, sp_num+1:sp_num+length(seed)) = 1;
-    W(sp_num+1:sp_num+length(seed), seed) = 1;
+    for i = 1:length(seed)
+        W(sp_num+i,seed(i)) = 1;
+        W(seed(i),sp_num+i) = 1;
+    end
     sp_num = sp_num + length(seed);
     sp_pos = [sp_pos; sp_pos(seed)];
     sp_obj = [sp_obj; sp_obj(seed)];
