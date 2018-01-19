@@ -1,5 +1,5 @@
-# My2017
-code for the paper "An unsupervised game-theoretic approach to saliency detection"
+# Code for the paper
+code for the paper "An unsupervised game-theoretic approach to saliency detection", which is under review as a journal paper.
 
 ## Stage1: Saliency Game
 run stage1.m (gop proposals should be provided as .mat file, run stage1_nogop.m for the one without gop proposals.)
