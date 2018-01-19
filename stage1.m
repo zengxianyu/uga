@@ -1,9 +1,7 @@
-%clear;
-%dataset = 'ECSSD';
-function stage1(dataset)
-img_root = sprintf('/home/zeng/data/datasets/saliency_Dataset/%s/images/images', dataset);
-mat_root = sprintf('/home/zeng/data/datasets/saliency_Dataset/%s/gop', dataset);
-output_root = sprintf('/home/zeng/data/datasets/saliency_Dataset/%s/Ours17color', dataset);
+clear;
+img_root = './images';
+mat_root = './gop';
+output_root = './output_color';
 img_name_list = dir([img_root, '/*', 'jpg']);
 system(sprintf('mkdir %s', output_root));
 system(sprintf('rm %s/*', output_root));
@@ -59,13 +57,6 @@ parfor i_img = 1:numel(img_name_list)
             [edges(:, 2), edges(:, 1)],...
             [w, w],...
             sp_num, sp_num);
-
-%         Whd = pdist2(sp_hist, sp_hist, @ChiSq);
-%         Whd = (Whd-min(Whd(:))) / (max(Whd(:))-min(Whd(:)));
-%         Whd = exp(-Whd * theta);
-%         Wh = zeros(sp_num, sp_num);
-%         Adj = sparse([edges(:, 1); edges(:, 2)], [edges(:, 2), edges(:, 1)], ones(length(edges)*2, 1), sp_num, sp_num);
-%         Wh(Adj==1) = Whd(Adj==1);
         
         sal = superpixel_saliency(Wh,bd,sp_obj, sp_pos,2.1e-7,9e-8,0.007, sp_num); 
         
@@ -74,5 +65,4 @@ parfor i_img = 1:numel(img_name_list)
     end
     sal_map = (sal_map-min(sal_map(:))) / (max(sal_map(:)) - min(sal_map(:)));
     imwrite(sal_map, sprintf('%s/%s.png', output_root, img_name(1:end-4)), 'png');
-end
 end

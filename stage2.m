@@ -1,20 +1,15 @@
-%clear;
-%dataset = 'ECSSD';
-function stage2(dataset)
-img_root = sprintf('/home/zeng/data/datasets/saliency_Dataset/%s/images/images', dataset);
-map_root_c = sprintf('/home/zeng/data/datasets/saliency_Dataset/%s/Ours17color', dataset);
-map_root_d = sprintf('/home/zeng/data/datasets/saliency_Dataset/%s/Ours17vgg', dataset);
-mat_root2 = sprintf('/home/zeng/data/datasets/saliency_Dataset/%s/vgg', dataset);
-output_root = sprintf('/home/zeng/data/datasets/saliency_Dataset/%s/Ours17irw', dataset);
-output_root_ave = sprintf('/home/zeng/data/datasets/saliency_Dataset/%s/Ours17ave', dataset);
+clear;
+img_root = './images';
+map_root_c = './output_color';
+map_root_d = './output_vgg';
+mat_root2 = './vgg';
+output_root = './output_irw';
 img_name_list = dir([img_root, '/*', 'jpg']);
-system(sprintf('mkdir %s', output_root_ave));
-system(sprintf('rm %s/*', output_root_ave));
 system(sprintf('mkdir %s', output_root));
 system(sprintf('rm %s/*', output_root));
 theta = 10;
 Ns = [100, 150, 200, 250];
-parfor i_img = 1:numel(img_name_list)
+for i_img = 1:numel(img_name_list)
     disp(i_img);
     sal_map = 1;
     rlbmap = 1;
@@ -107,6 +102,4 @@ parfor i_img = 1:numel(img_name_list)
     end
     sal_map = (sal_map-min(sal_map(:))) / (max(sal_map(:)) - min(sal_map(:)));
     imwrite(sal_map, sprintf('%s/%s.png', output_root, img_name(1:end-4)), 'png');
-    imwrite(img_map_c*0.5+img_map_d*0.5, sprintf('%s/%s.png', output_root_ave, img_name(1:end-4)), 'png');
-end
 end
